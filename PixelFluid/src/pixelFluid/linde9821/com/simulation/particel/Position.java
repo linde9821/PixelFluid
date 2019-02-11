@@ -1,28 +1,11 @@
 package pixelFluid.linde9821.com.simulation.particel;
 
-public class Position {
+import pixelFluid.linde9821.com.simulation.Vector;
+
+public class Position extends Vector{
 	private double x, y;
 	
 	public Position(double x, double y) {
-		this.x = x;
-		this.y = y;
-	}
-
-	public double getX() {
-		return x;
-	}
-
-	public void setX(double x) {
-		this.x = x;
-	}
-
-	public double getY() {
-		return y;
-	}
-
-	public void setY(double y) {
-		this.y = y;
-	}
-	
-	
+		super(x, y);
+	}	
 }

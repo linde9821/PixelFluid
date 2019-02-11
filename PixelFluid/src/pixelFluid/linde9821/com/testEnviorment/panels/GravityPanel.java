@@ -1,4 +1,4 @@
-package pixelFluid.linde9821.com.testEnviorment.Panels;
+package pixelFluid.linde9821.com.testEnviorment.panels;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -14,9 +14,9 @@ public class GravityPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private Gravity gr;
 
-	public GravityPanel(double x, double y) {
+	public GravityPanel(Gravity g) {
 		super();
-		gr = new Gravity(x, y);
+		gr = g;
 
 		setBackground(Color.green);
 	}

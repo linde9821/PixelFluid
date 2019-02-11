@@ -1,4 +1,4 @@
-package pixelFluid.linde9821.com.testEnviorment.Panels;
+package pixelFluid.linde9821.com.testEnviorment.panels;
 
 public class FrameCounter extends Thread {
 	private long period = 10000; // ms

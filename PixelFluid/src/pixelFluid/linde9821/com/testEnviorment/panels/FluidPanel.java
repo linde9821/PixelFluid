@@ -1,4 +1,4 @@
-package pixelFluid.linde9821.com.testEnviorment.Panels;
+package pixelFluid.linde9821.com.testEnviorment.panels;
 
 import java.awt.Color;
 import java.awt.Graphics;

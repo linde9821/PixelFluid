@@ -13,8 +13,9 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
-import pixelFluid.linde9821.com.testEnviorment.Panels.FluidPanel;
-import pixelFluid.linde9821.com.testEnviorment.Panels.GravityPanel;
+import pixelFluid.linde9821.com.simulation.ParticelManager;
+import pixelFluid.linde9821.com.testEnviorment.panels.FluidPanel;
+import pixelFluid.linde9821.com.testEnviorment.panels.GravityPanel;
 
 public class VirtualFrame extends JFrame {
 
@@ -29,7 +30,10 @@ public class VirtualFrame extends JFrame {
 	private JTextField tFXvel;
 	private JTextField tFYvel;
 	private JCheckBox chckbxGravity;
-	
+	private JTextField tFSpawnAmount;
+
+	private ParticelManager pm;
+
 	/**
 	 * Launch the application.
 	 */
@@ -50,22 +54,30 @@ public class VirtualFrame extends JFrame {
 	 * Create the frame.
 	 */
 	public VirtualFrame() {
+		// simulation
+		pm = new ParticelManager();
+
+		// frame
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1500, 851);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		setResizable(false);
-		
+
 		FluidPanel fluidPanel = new FluidPanel();
+		fluidPanel.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+			}
+		});
 		fluidPanel.setLocation(0, 0);
 		fluidPanel.setSize(1200, 800);
 		fluidPanel.setVisible(true);
 		contentPane.setLayout(null);
 		contentPane.add(fluidPanel);
 
-
-		GravityPanel gravityPanel = new GravityPanel(0, 10);
+		GravityPanel gravityPanel = new GravityPanel(pm.getGravity());
 		gravityPanel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent mE) {
@@ -113,7 +125,7 @@ public class VirtualFrame extends JFrame {
 				gravityTf.setText(Double.toString(gravityPanel.getLength()));
 			}
 		});
-		tFXvel.setBounds(1287, 341, 92, 32);
+		tFXvel.setBounds(1320, 338, 150, 20);
 		contentPane.add(tFXvel);
 		tFXvel.setText(Double.toString(gravityPanel.getXV()));
 		tFXvel.setColumns(10);
@@ -127,21 +139,21 @@ public class VirtualFrame extends JFrame {
 			}
 		});
 		tFYvel.setText(Double.toString(gravityPanel.getYV()));
-		tFYvel.setBounds(1287, 381, 92, 32);
+		tFYvel.setBounds(1320, 388, 150, 20);
 		contentPane.add(tFYvel);
 		tFYvel.setColumns(10);
-		
+
 		chckbxGravity = new JCheckBox("Gravity");
 		chckbxGravity.setSelected(true);
 		chckbxGravity.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(chckbxGravity.isSelected()) {
+				if (chckbxGravity.isSelected()) {
 					tFXvel.setText("0.0");
 					tFYvel.setText("10.0");
 					gravityPanel.setVec(0, 10);
 					gravityPanel.repaint();
 					gravityTf.setText(Double.toString(gravityPanel.getLength()));
-				}else {
+				} else {
 					tFXvel.setText("0.0");
 					tFYvel.setText("0.0");
 					gravityPanel.setVec(0, 0);
@@ -150,7 +162,17 @@ public class VirtualFrame extends JFrame {
 				}
 			}
 		});
-		chckbxGravity.setBounds(1222, 17, 179, 35);
+		chckbxGravity.setBounds(1222, 17, 179, 20);
 		contentPane.add(chckbxGravity);
+
+		JLabel lblSpawnamount = new JLabel("spawnamount");
+		lblSpawnamount.setBounds(1222, 435, 91, 14);
+		contentPane.add(lblSpawnamount);
+
+		tFSpawnAmount = new JTextField();
+		tFSpawnAmount.setText("100");
+		tFSpawnAmount.setBounds(1320, 431, 80, 20);
+		contentPane.add(tFSpawnAmount);
+		tFSpawnAmount.setColumns(10);
 	}
 }
