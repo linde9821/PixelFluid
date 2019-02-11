@@ -28,7 +28,8 @@ public class VirtualFrame extends JFrame {
 	private JLabel lblYvel;
 	private JTextField tFXvel;
 	private JTextField tFYvel;
-
+	private JCheckBox chckbxGravity;
+	
 	/**
 	 * Launch the application.
 	 */
@@ -54,7 +55,8 @@ public class VirtualFrame extends JFrame {
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-
+		setResizable(false);
+		
 		FluidPanel fluidPanel = new FluidPanel();
 		fluidPanel.setLocation(0, 0);
 		fluidPanel.setSize(1200, 800);
@@ -62,20 +64,12 @@ public class VirtualFrame extends JFrame {
 		contentPane.setLayout(null);
 		contentPane.add(fluidPanel);
 
-		JCheckBox chckbxGravity = new JCheckBox("Gravity");
-		chckbxGravity.setSelected(true);
-		chckbxGravity.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-			}
-		});
-		chckbxGravity.setBounds(1222, 17, 179, 35);
-		contentPane.add(chckbxGravity);
 
 		GravityPanel gravityPanel = new GravityPanel(0, 10);
 		gravityPanel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent mE) {
-				gravityPanel.setVec((int) (mE.getX() - 100), (int) (mE.getY() - 100));
+				gravityPanel.setVec(mE.getX() - 100, mE.getY() - 100);
 				gravityPanel.repaint();
 				gravityTf.setText(Double.toString(gravityPanel.getLength()));
 				tFXvel.setText(Double.toString(gravityPanel.getXV()));
@@ -95,6 +89,7 @@ public class VirtualFrame extends JFrame {
 				tFXvel.setText(Double.toString(gravityPanel.getXV()));
 				tFYvel.setText(Double.toString(gravityPanel.getYV()));
 				gravityTf.setText(Double.toString(gravityPanel.getLength()));
+				chckbxGravity.setSelected(true);
 			}
 		});
 		gravityTf.setBounds(1221, 69, 186, 32);
@@ -113,7 +108,7 @@ public class VirtualFrame extends JFrame {
 		tFXvel = new JTextField();
 		tFXvel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				gravityPanel.setVec((int) Double.parseDouble(tFXvel.getText()), (int) Double.parseDouble(tFYvel.getText()));
+				gravityPanel.setVec(Double.parseDouble(tFXvel.getText()), Double.parseDouble(tFYvel.getText()));
 				gravityPanel.repaint();
 				gravityTf.setText(Double.toString(gravityPanel.getLength()));
 			}
@@ -126,7 +121,7 @@ public class VirtualFrame extends JFrame {
 		tFYvel = new JTextField();
 		tFYvel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				gravityPanel.setVec((int) Double.parseDouble(tFXvel.getText()), (int) Double.parseDouble(tFYvel.getText()));
+				gravityPanel.setVec(Double.parseDouble(tFXvel.getText()), Double.parseDouble(tFYvel.getText()));
 				gravityPanel.repaint();
 				gravityTf.setText(Double.toString(gravityPanel.getLength()));
 			}
@@ -135,5 +130,27 @@ public class VirtualFrame extends JFrame {
 		tFYvel.setBounds(1287, 381, 92, 32);
 		contentPane.add(tFYvel);
 		tFYvel.setColumns(10);
+		
+		chckbxGravity = new JCheckBox("Gravity");
+		chckbxGravity.setSelected(true);
+		chckbxGravity.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(chckbxGravity.isSelected()) {
+					tFXvel.setText("0.0");
+					tFYvel.setText("10.0");
+					gravityPanel.setVec(0, 10);
+					gravityPanel.repaint();
+					gravityTf.setText(Double.toString(gravityPanel.getLength()));
+				}else {
+					tFXvel.setText("0.0");
+					tFYvel.setText("0.0");
+					gravityPanel.setVec(0, 0);
+					gravityPanel.repaint();
+					gravityTf.setText(Double.toString(gravityPanel.getLength()));
+				}
+			}
+		});
+		chckbxGravity.setBounds(1222, 17, 179, 35);
+		contentPane.add(chckbxGravity);
 	}
 }

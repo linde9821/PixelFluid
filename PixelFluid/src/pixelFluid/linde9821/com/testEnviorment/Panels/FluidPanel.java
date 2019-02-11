@@ -11,14 +11,15 @@ public class FluidPanel extends JPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	private boolean renderParticel = true;
 
-	private boolean debug;
+	private boolean debug = true;
 	public FrameCounter frameCounter;
 
 	public FluidPanel() {
 		super();
 		this.setBackground(Color.black);
-		debug = true;
 		frameCounter = new FrameCounter();
 		frameCounter.start();
 	}
@@ -29,6 +30,13 @@ public class FluidPanel extends JPanel {
 
 		if (debug)
 			drawDebugInfos(g);
+		
+		if(renderParticel)
+			drawParticel(g);
+	}
+	
+	private void drawParticel(Graphics g) {
+		
 	}
 
 	private void drawDebugInfos(Graphics g) {
