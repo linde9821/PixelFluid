@@ -17,8 +17,6 @@ public class Grid {
 		double newX = (p.getPosPrev().getX() + p.getPos().getX());
 		double newY = (p.getPosPrev().getY() + p.getPos().getY());
 		
-		p.setPos(new Position(newX, newY));
-		
 		// not so sure
 		if (newY > 800)
 			newY = 799;
@@ -30,32 +28,24 @@ public class Grid {
 		else if (newX < 0)
 			newX = 0;
 		
+		p.setPos(new Position(newX, newY));
+		
+		
 		grid[(int) newX][(int) newY].setP(p);
 	}
 
 	public ArrayList<Particle> possibleNeigbors(Particle p) {
-		int x = 0;
-		int y = 0;
+		int x = (int) p.getPos().getX();
+		int y = (int) p.getPos().getY();
 		ArrayList<Particle> neighbors = new ArrayList<Particle>();
 
-		for (int i = 0; i < 800; i++) {
-			for (int j = 0; j < 1200; j++) {
-				if (p == grid[j][i].getP()) {
-					x = j;
-					y = i;
-				}
-			}
-		}
-
-		for (int xx = -1; xx <= 1; xx++) {
-			for (int yy = -1; yy <= 1; yy++) {
+		for (int xx = -1; xx < 1; xx++) {
+			for (int yy = -1; yy < 1; yy++) {
 				if (xx == 0 && yy == 0) {
 					continue; // You are not neighbor to yourself
 				}
-				if (Math.abs(xx) + Math.abs(yy) > 1) {
-					continue;
-				}
-				if (isOnMap(x + xx, y + yy) && isValidNeighbors(x + xx, y + yy)) {
+				
+				if (isValidNeighbors(x + xx, y + yy)) {
 					neighbors.add(grid[x + xx][y + yy].getP());
 				}
 			}
@@ -69,9 +59,10 @@ public class Grid {
 	}
 	
 	public boolean isValidNeighbors(int x, int y) {
-		if (grid[x][y].getP() != null)
-			return true;
-		
+		if (isOnMap(x, y)) {
+			if (grid[x][y].getP() != null)
+				return true;
+		}
 		return false;
 	}
 

@@ -49,6 +49,7 @@ public class VirtualFrame extends JFrame {
 			public void run() {
 				try {
 					VirtualFrame frame = new VirtualFrame();
+					
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -159,7 +160,7 @@ public class VirtualFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if (chckbxGravity.isSelected()) {
 					tFXvel.setText("0.0");
-					tFYvel.setText("10.0");
+					tFYvel.setText("1.0");
 					gravityPanel.setVec(0, 10);
 					gravityPanel.repaint();
 					gravityTf.setText(Double.toString(gravityPanel.getLength()));
@@ -180,7 +181,7 @@ public class VirtualFrame extends JFrame {
 		contentPane.add(lblSpawnamount);
 
 		tFSpawnAmount = new JTextField();
-		tFSpawnAmount.setText("100");
+		tFSpawnAmount.setText("1");
 		tFSpawnAmount.setBounds(1320, 431, 80, 20);
 		contentPane.add(tFSpawnAmount);
 		tFSpawnAmount.setColumns(10);

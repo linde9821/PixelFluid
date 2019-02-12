@@ -20,19 +20,28 @@ public class ParticelManager {
 	private double b; // the viscosit's quadratic dependence on the velocity (beta)
 	private double k; // stiffness used in DoubleDensityRelaxation
 	private double kNear; // near-stiffness used in DoubleDensityRelaxation
-	private Gravity gravity = new Gravity(0, 10); // the global gravity acceleration (in this project used as the only
-													// changing external force)
+	private Gravity gravity; // the global gravity acceleration (in this project used as the only
+								// changing external force)
 
 	private ArrayList<Particle> particles; // main list of of particles
 	private Grid grid; //
 	private DistanceField distanceField; //
 
 	private final boolean particelCoordinationCheck = true;
+	
+	private int ttt = 0;
 
 	public ParticelManager() {
 		timeStep = 0.0166667;
 		maxParticles = 3000;
+		radius = 2;
+		collisionRadius = 2;
+		p0 = 1;
+		s = 2;
+		b = 1;
+		k = 2;
 
+		gravity = new Gravity(0, 1);
 		Particle.resetCurrentAmount();
 		particles = new ArrayList<Particle>();
 		grid = new Grid();
@@ -41,6 +50,9 @@ public class ParticelManager {
 
 	// simulation
 	public void update(double timeStep) {
+		if (ttt==10)
+			System.currentTimeMillis();
+		
 		System.out.println("start update");
 		applyExternalForce(timeStep);
 		applyViscosity(timeStep);
@@ -50,11 +62,13 @@ public class ParticelManager {
 		resolveCollisions();
 		updateVelocity(timeStep);
 		
+		System.out.println(particles.get(0).getPos().getX());
 		System.out.println("end update");
-
 
 		if (particelCoordinationCheck)
 			checkCoordinats();
+		
+		ttt++;
 	}
 
 	public void applyExternalForce(double timeStep) {
@@ -88,7 +102,7 @@ public class ParticelManager {
 
 					Vector iVec = Vector.scalarMulti(vpn, temp); //
 
-					p.setVel((Velocity) Vector.sub(p.getVel(), iVec)); // p.vel = p.vel - I
+					p.setVel(new Velocity(Vector.sub(p.getVel(), iVec))); // p.vel = p.vel - I
 				}
 			}
 		}
@@ -137,7 +151,7 @@ public class ParticelManager {
 				q = 1.0 - (tempN / radius);
 				pr = pr + (q * q);
 				prNear = prNear + (q * q * q);
-				
+
 				n.setTempN(tempN);
 			}
 
@@ -157,20 +171,21 @@ public class ParticelManager {
 				D = Vector.scalarMulti(vpn, (0.5 * (timeStep * timeStep) * (P * q + PNear * (q * q))));
 
 				Vector temp = Vector.add(n.getPos(), D);
-				n.setPos((Position) temp);
+				n.setPos(new Position (temp));
 
 				delta = Vector.sub(delta, D);
 			}
 
+			//Error Starts beeing neogbour to itselvs
 			p.getPos().add(D);
 		}
 	}
 
-	// currently not working 
+	// currently not working
 	public void resolveCollisions() {
 		double friction = 1;
 		double collisionSoftness = 0.4;
-		
+
 		for (int i = 0; i < particles.size(); i++) {
 			Particle p = particles.get(i);
 			int index = distanceField.getIndex(p.getPos());
@@ -181,15 +196,15 @@ public class ParticelManager {
 				if (distance > -collisionRadius) {
 					Vector normal = distanceField.getNormal(index);
 					Vector tangent = perpendicularCCW(normal);
-					
+
 					double temp = timeStep * friction * Vector.scalarProduct(p.getVpn(), tangent);
-					
+
 					tangent.scalarMulti(temp);
-					
+
 					p.setPos(new Position(Vector.sub(p.getPos(), tangent)));
-					
+
 					temp = collisionSoftness * (distance - radius);
-					
+
 					p.setPos(new Position(Position.sub(p.getPos(), (Position.scalarMulti(normal, temp)))));
 				}
 			}
@@ -208,7 +223,7 @@ public class ParticelManager {
 	private Vector perpendicularCCW(Vector normal) {
 		return normal;
 	}
-	
+
 	public void checkCoordinats() {
 		for (int i = 0; i < particles.size(); i++) {
 			Particle p = particles.get(i);
