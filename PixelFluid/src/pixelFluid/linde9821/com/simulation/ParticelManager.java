@@ -7,6 +7,7 @@ import pixelFluid.linde9821.com.simulation.grid.Grid;
 import pixelFluid.linde9821.com.simulation.particel.Particle;
 import pixelFluid.linde9821.com.simulation.particel.Position;
 import pixelFluid.linde9821.com.simulation.particel.Velocity;
+import sun.text.normalizer.CharTrie.FriendAgent;
 
 public class ParticelManager {
 
@@ -26,18 +27,21 @@ public class ParticelManager {
 	private Grid grid; //
 	private DistanceField distanceField; //
 
+	private final boolean particelCoordinationCheck = true;
+
 	public ParticelManager() {
-		timeStep = 60;
+		timeStep = 0.0166667;
 		maxParticles = 3000;
 
 		Particle.resetCurrentAmount();
 		particles = new ArrayList<Particle>();
 		grid = new Grid();
-		distanceField = new DistanceField();
+		distanceField = new DistanceField(grid);
 	}
 
 	// simulation
 	public void update(double timeStep) {
+		System.out.println("start update");
 		applyExternalForce(timeStep);
 		applyViscosity(timeStep);
 		advanceParticles(timeStep);
@@ -45,6 +49,12 @@ public class ParticelManager {
 		doubleDensityRelaxation(timeStep);
 		resolveCollisions();
 		updateVelocity(timeStep);
+		
+		System.out.println("end update");
+
+
+		if (particelCoordinationCheck)
+			checkCoordinats();
 	}
 
 	public void applyExternalForce(double timeStep) {
@@ -127,6 +137,8 @@ public class ParticelManager {
 				q = 1.0 - (tempN / radius);
 				pr = pr + (q * q);
 				prNear = prNear + (q * q * q);
+				
+				n.setTempN(tempN);
 			}
 
 			double P = k * (pr - p0);
@@ -140,25 +152,79 @@ public class ParticelManager {
 
 				q = 1.0 - (tempN / radius);
 				Vector vpn = Vector.scalarDiv((Vector.sub(p.getPos(), n.getPos())), tempN);
-				
+				n.setVpn(vpn);
+
 				D = Vector.scalarMulti(vpn, (0.5 * (timeStep * timeStep) * (P * q + PNear * (q * q))));
-				
+
 				Vector temp = Vector.add(n.getPos(), D);
-				n.setPos((Position) temp); 
-				
+				n.setPos((Position) temp);
+
 				delta = Vector.sub(delta, D);
 			}
-			
+
 			p.getPos().add(D);
 		}
 	}
 
+	// currently not working 
 	public void resolveCollisions() {
+		double friction = 1;
+		double collisionSoftness = 0.4;
+		
+		for (int i = 0; i < particles.size(); i++) {
+			Particle p = particles.get(i);
+			int index = distanceField.getIndex(p.getPos());
 
+			if (index != -1) {
+				double distance = distanceField.getDistance(index);
+
+				if (distance > -collisionRadius) {
+					Vector normal = distanceField.getNormal(index);
+					Vector tangent = perpendicularCCW(normal);
+					
+					double temp = timeStep * friction * Vector.scalarProduct(p.getVpn(), tangent);
+					
+					tangent.scalarMulti(temp);
+					
+					p.setPos(new Position(Vector.sub(p.getPos(), tangent)));
+					
+					temp = collisionSoftness * (distance - radius);
+					
+					p.setPos(new Position(Position.sub(p.getPos(), (Position.scalarMulti(normal, temp)))));
+				}
+			}
+		}
 	}
 
-	public void updateVelocity(double timeStep) { 
+	public void updateVelocity(double timeStep) {
+		for (int i = 0; i < particles.size(); i++) {
+			Particle p = particles.get(i);
 
+			Vector temp = Vector.scalarDiv(Vector.sub(p.getPos(), p.getPosPrev()), timeStep);
+			p.setVel(new Velocity(temp));
+		}
+	}
+
+	private Vector perpendicularCCW(Vector normal) {
+		return normal;
+	}
+	
+	public void checkCoordinats() {
+		for (int i = 0; i < particles.size(); i++) {
+			Particle p = particles.get(i);
+
+			if (p.getPos().getX() > 10000 || p.getPos().getX() < -100 || p.getPos().getY() > 10000
+					|| p.getPos().getY() < -100) {
+				removeParticel(p);
+				consolLog("Particel " + p.getId() + " removed [particelCoordinationCheck] (" + p.getPos().getX() + "|"
+						+ p.getPos().getY() + ")");
+			}
+		}
+	}
+
+	public void removeParticel(Particle p) {
+		particles.remove(p);
+		Particle.removeParticel();
 	}
 
 	public void addParticle(int x, int y) {
@@ -167,12 +233,11 @@ public class ParticelManager {
 
 	public void addParticle(int amount, int x, int y) {
 		int added = 0;
-		
-		
+
 		for (int i = 0; i < amount; i++) {
 			if (getCurrentParticelCount() + 1 <= maxParticles) {
 				particles.add(new Particle(x, y));
-				added ++;
+				added++;
 			}
 		}
 

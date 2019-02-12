@@ -6,7 +6,10 @@ public class Velocity extends Vector {
 
 	public Velocity(double x, double y) {
 		super(x, y);
-		// TODO Auto-generated constructor stub
+	}
+	
+	public Velocity(Vector v) {
+		super(v.getX(), v.getY());
 	}
 
 }

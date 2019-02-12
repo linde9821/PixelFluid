@@ -3,13 +3,18 @@ package pixelFluid.linde9821.com.simulation.particel;
 import java.util.ArrayList;
 
 import pixelFluid.linde9821.com.simulation.Gravity;
+import pixelFluid.linde9821.com.simulation.Vector;
 
 public class Particle {
 	private Position pos; // the particles position
 	private Position posPrev; // the particles previous position
 	private Velocity vel; // the particles velocity
-	private int index; // an index used by the grid class
+	private int id; 
+	private int index; // an id used by the grid class
 	private ArrayList<Particle> neighbors; // collection of each particle's list of neighbors
+	
+	private double tempN;
+	private Vector vpn;
 	
 	private static int currentAmount;
 
@@ -22,8 +27,12 @@ public class Particle {
 		posPrev = new Position(x, y);
 		vel = new Velocity(0, 0);
 		neighbors = new ArrayList<Particle>();
-		index = currentAmount;		// unsure about the usage of index
+		id = currentAmount;		// unsure about the usage of id
 		currentAmount ++;
+	}
+	
+	public static void removeParticel() {
+		currentAmount--;	
 	}
 	
 	public static void resetCurrentAmount() {
@@ -54,12 +63,12 @@ public class Particle {
 		this.vel = vel;
 	}
 
-	public int getIndex() {
-		return index;
+	public int getId() {
+		return id;
 	}
 
-	public void setIndex(int index) {
-		this.index = index;
+	public void setid(int id) {
+		this.id = id;
 	}
 
 	public Position add(Position old, Gravity g) {
@@ -79,5 +88,31 @@ public class Particle {
 
 	public static int getCurrentAmount() {
 		return currentAmount;
+	}
+
+	public int getIndex() {
+		return index;
+	}
+
+	public void setIndex(int index) {
+		this.index = index;
+	}
+
+	public double getTempN() {
+		return tempN;
+	}
+
+	public void setTempN(double tempN) {
+		this.tempN = tempN;
+	}
+
+	public Vector getVpn() {
+		return vpn;
+	}
+
+	public void setVpn(Vector vpn) {
+		this.vpn = vpn;
 	}	
+	
+	
 }

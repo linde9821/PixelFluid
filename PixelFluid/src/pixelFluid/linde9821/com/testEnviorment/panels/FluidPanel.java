@@ -32,7 +32,9 @@ public class FluidPanel extends JPanel implements Runnable {
 	}
 
 	public void addParticles(int amount, int x, int y) {
-		pm.addParticle(amount, x, y);
+		
+			pm.addParticle(amount, x, y);
+		
 	}
 
 	public void paintComponent(Graphics g) {
@@ -70,7 +72,7 @@ public class FluidPanel extends JPanel implements Runnable {
 		int internalUpdates = 0;
 
 		while (true) {
-			if (System.currentTimeMillis() - lastRun >= 1000 / pm.getTimeStep()) {
+			if (System.currentTimeMillis() - lastRun >= pm.getTimeStep()) {
 				pm.update(pm.getTimeStep());
 				internalUpdates++;
 				repaint();

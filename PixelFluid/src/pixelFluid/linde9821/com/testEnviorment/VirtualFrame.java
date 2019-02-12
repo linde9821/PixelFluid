@@ -208,5 +208,14 @@ public class VirtualFrame extends JFrame {
 		JButton btnLoad = new JButton("Load");
 		btnLoad.setBounds(1320, 15, 97, 25);
 		contentPane.add(btnLoad);
+		
+		JButton btnReset = new JButton("reset");
+		btnReset.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				pm.getParticles().clear();
+			}
+		});
+		btnReset.setBounds(1318, 492, 89, 23);
+		contentPane.add(btnReset);
 	}
 }
