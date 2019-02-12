@@ -10,7 +10,26 @@ public class Particle {
 	private Velocity vel; // the particles velocity
 	private int index; // an index used by the grid class
 	private ArrayList<Particle> neighbors; // collection of each particle's list of neighbors
+	
+	private static int currentAmount;
 
+	public Particle(Position p) {
+		this((int) p.getX(),(int) p.getY());
+	}
+	
+	public Particle(int x, int y) {
+		pos = new Position(x, y);
+		posPrev = new Position(x, y);
+		vel = new Velocity(0, 0);
+		neighbors = new ArrayList<Particle>();
+		index = currentAmount;		// unsure about the usage of index
+		currentAmount ++;
+	}
+	
+	public static void resetCurrentAmount() {
+		currentAmount = 0;
+	}
+	
 	public Position getPos() {
 		return pos;
 	}
@@ -57,7 +76,8 @@ public class Particle {
 	public void setNeighbors(ArrayList<Particle> neighbors) {
 		this.neighbors = neighbors;
 	}
-	
-	
 
+	public static int getCurrentAmount() {
+		return currentAmount;
+	}	
 }

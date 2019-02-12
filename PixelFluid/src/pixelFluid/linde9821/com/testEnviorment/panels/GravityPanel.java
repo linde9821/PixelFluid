@@ -48,6 +48,7 @@ public class GravityPanel extends JPanel {
 		// draw vec
 		g.setColor(Color.red);
 		g.drawLine(105, 105, (int) gr.getX() + 105, (int) gr.getY() + 105);
+		g.fillRect((int) gr.getX() + 103, (int) gr.getY() + 103, 5, 5);
 	}
 
 	public void setVec(double x, double y) {

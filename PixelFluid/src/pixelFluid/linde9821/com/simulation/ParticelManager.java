@@ -5,12 +5,13 @@ import java.util.ArrayList;
 import pixelFluid.linde9821.com.simulation.distanceField.DistanceField;
 import pixelFluid.linde9821.com.simulation.grid.Grid;
 import pixelFluid.linde9821.com.simulation.particel.Particle;
+import pixelFluid.linde9821.com.simulation.particel.Position;
 import pixelFluid.linde9821.com.simulation.particel.Velocity;
 
 public class ParticelManager {
 
-	private final double timeStep;
-
+	private double timeStep;
+	private final int maxParticles;
 	private double radius; // maximum distance particles effect each other
 	private double collisionRadius; // the distance from a wall that counts as a collision
 	private double p0; // rest density
@@ -19,7 +20,7 @@ public class ParticelManager {
 	private double k; // stiffness used in DoubleDensityRelaxation
 	private double kNear; // near-stiffness used in DoubleDensityRelaxation
 	private Gravity gravity = new Gravity(0, 10); // the global gravity acceleration (in this project used as the only
-													// changing extternal force)
+													// changing external force)
 
 	private ArrayList<Particle> particles; // main list of of particles
 	private Grid grid; //
@@ -27,6 +28,12 @@ public class ParticelManager {
 
 	public ParticelManager() {
 		timeStep = 60;
+		maxParticles = 3000;
+
+		Particle.resetCurrentAmount();
+		particles = new ArrayList<Particle>();
+		grid = new Grid();
+		distanceField = new DistanceField();
 	}
 
 	// simulation
@@ -69,38 +76,125 @@ public class ParticelManager {
 
 					double temp = 0.5 * timeStep * (1 - q) * (s * velInward + b * velInward * velInward);
 
-					Vector iVec = Vector.scalarMulti(vpn, temp);	//
-					
-					p.setVel((Velocity) Vector.sub(p.getVel(), iVec));	//p.vel = p.vel - I
+					Vector iVec = Vector.scalarMulti(vpn, temp); //
+
+					p.setVel((Velocity) Vector.sub(p.getVel(), iVec)); // p.vel = p.vel - I
 				}
 			}
 		}
 	}
 
 	public void advanceParticles(double timeStep) {
+		for (int i = 0; i < particles.size(); i++) {
+			Particle p = particles.get(i);
 
+			p.setPosPrev(p.getPos());
+			p.setPos(new Position(Vector.scalarMulti(p.getVel(), timeStep))); // p.pos = timeStep * p.vel
+			grid.moveParticle(p); // not yet implemented
+		}
 	}
 
 	public void updateNeighbors() {
+		for (int i = 0; i < particles.size(); i++) {
+			Particle p = particles.get(i);
 
+			p.getNeighbors().clear();
+
+			ArrayList<Particle> possibleNeigbour = grid.possibleNeigbors(p);
+
+			for (int j = 0; j < possibleNeigbour.size(); j++) {
+				Particle n = possibleNeigbour.get(j);
+
+				if (Vector.sub(p.getPos(), n.getPos()).length() < radius) // |p.pos - n.pos| < radius
+					p.getNeighbors().add(n);
+			}
+		}
 	}
 
 	public void doubleDensityRelaxation(double timeStep) {
+		for (int i = 0; i < particles.size(); i++) {
+			Particle p = particles.get(i);
+			double pr = 0;
+			double prNear = 0;
 
+			double tempN = 0;
+			double q;
+
+			for (int j = 0; j < p.getNeighbors().size(); j++) {
+				Particle n = p.getNeighbors().get(j);
+
+				tempN = (Vector.sub(p.getPos(), n.getPos())).length();
+				q = 1.0 - (tempN / radius);
+				pr = pr + (q * q);
+				prNear = prNear + (q * q * q);
+			}
+
+			double P = k * (pr - p0);
+			double PNear = kNear * prNear;
+
+			Vector delta = new Vector(0, 0);
+			Vector D = new Vector(0, 0);
+
+			for (int j = 0; j < p.getNeighbors().size(); j++) {
+				Particle n = p.getNeighbors().get(j);
+
+				q = 1.0 - (tempN / radius);
+				Vector vpn = Vector.scalarDiv((Vector.sub(p.getPos(), n.getPos())), tempN);
+				
+				D = Vector.scalarMulti(vpn, (0.5 * (timeStep * timeStep) * (P * q + PNear * (q * q))));
+				
+				Vector temp = Vector.add(n.getPos(), D);
+				n.setPos((Position) temp); 
+				
+				delta = Vector.sub(delta, D);
+			}
+			
+			p.getPos().add(D);
+		}
 	}
 
 	public void resolveCollisions() {
 
 	}
 
-	public void updateVelocity(double timeStep) {
+	public void updateVelocity(double timeStep) { 
 
+	}
+
+	public void addParticle(int x, int y) {
+		addParticle(1, x, y);
+	}
+
+	public void addParticle(int amount, int x, int y) {
+		int added = 0;
+		
+		
+		for (int i = 0; i < amount; i++) {
+			if (getCurrentParticelCount() + 1 <= maxParticles) {
+				particles.add(new Particle(x, y));
+				added ++;
+			}
+		}
+
+		consolLog(added + " Particles added at (" + x + "|" + y + ")");
 	}
 
 	// getter and setter
 
+	public int getCurrentParticelCount() {
+		return particles.size();
+	}
+
+	public int getMaxParticles() {
+		return maxParticles;
+	}
+
 	public double getRadius() {
 		return radius;
+	}
+
+	public void setTimeStep(double timeStep) {
+		this.timeStep = timeStep;
 	}
 
 	public void setRadius(double radius) {
@@ -189,6 +283,10 @@ public class ParticelManager {
 
 	public double getTimeStep() {
 		return timeStep;
+	}
+
+	private void consolLog(String str) {
+		System.out.println("ParticelManager: " + str);
 	}
 
 }

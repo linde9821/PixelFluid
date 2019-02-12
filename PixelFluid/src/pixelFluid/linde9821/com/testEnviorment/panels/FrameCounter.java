@@ -29,7 +29,6 @@ public class FrameCounter extends Thread {
 
 	public void increaseCounter() {
 		counter += 1;
-		System.out.println(counter);
 	}
 
 	public double getCurrentFramerate() {
@@ -43,9 +42,7 @@ public class FrameCounter extends Thread {
 	public void calcFrameRate() {
 		try {
 			currentFramerate = counter / (System.currentTimeMillis() - lastUpdate);
-			// System.out.println(currentFramerate);
 		} catch (ArithmeticException e) {
-			// e.printStackTrace();
 		}
 	}
 

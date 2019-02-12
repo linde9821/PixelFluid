@@ -16,11 +16,12 @@ import javax.swing.border.EmptyBorder;
 import pixelFluid.linde9821.com.simulation.ParticelManager;
 import pixelFluid.linde9821.com.testEnviorment.panels.FluidPanel;
 import pixelFluid.linde9821.com.testEnviorment.panels.GravityPanel;
+import javax.swing.JButton;
 
 public class VirtualFrame extends JFrame {
 
 	/**
-	 * 
+	 * Frame
 	 */
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -31,8 +32,14 @@ public class VirtualFrame extends JFrame {
 	private JTextField tFYvel;
 	private JCheckBox chckbxGravity;
 	private JTextField tFSpawnAmount;
+	private GravityPanel gravityPanel;
+	private SimulationButton startStopButton;
 
+	/**
+	 * Simulation
+	 */
 	private ParticelManager pm;
+	private Thread simThread;
 
 	/**
 	 * Launch the application.
@@ -54,7 +61,6 @@ public class VirtualFrame extends JFrame {
 	 * Create the frame.
 	 */
 	public VirtualFrame() {
-		// simulation
 		pm = new ParticelManager();
 
 		// frame
@@ -65,10 +71,12 @@ public class VirtualFrame extends JFrame {
 		setContentPane(contentPane);
 		setResizable(false);
 
-		FluidPanel fluidPanel = new FluidPanel();
+		FluidPanel fluidPanel = new FluidPanel(pm);
 		fluidPanel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				fluidPanel.addParticles(Integer.parseInt(tFSpawnAmount.getText()), e.getX(), e.getY());
+				fluidPanel.repaint();
 			}
 		});
 		fluidPanel.setLocation(0, 0);
@@ -76,8 +84,10 @@ public class VirtualFrame extends JFrame {
 		fluidPanel.setVisible(true);
 		contentPane.setLayout(null);
 		contentPane.add(fluidPanel);
+		
+		simThread = new Thread(fluidPanel, "Simulation-Thread");
 
-		GravityPanel gravityPanel = new GravityPanel(pm.getGravity());
+		gravityPanel = new GravityPanel(pm.getGravity());
 		gravityPanel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent mE) {
@@ -165,7 +175,7 @@ public class VirtualFrame extends JFrame {
 		chckbxGravity.setBounds(1222, 17, 179, 20);
 		contentPane.add(chckbxGravity);
 
-		JLabel lblSpawnamount = new JLabel("spawnamount");
+		JLabel lblSpawnamount = new JLabel("spawnamount:");
 		lblSpawnamount.setBounds(1222, 435, 91, 14);
 		contentPane.add(lblSpawnamount);
 
@@ -174,5 +184,29 @@ public class VirtualFrame extends JFrame {
 		tFSpawnAmount.setBounds(1320, 431, 80, 20);
 		contentPane.add(tFSpawnAmount);
 		tFSpawnAmount.setColumns(10);
+
+		// simulation
+
+		startStopButton = new SimulationButton();
+		startStopButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (startStopButton.isRunning())
+					simThread.interrupt();
+				else
+					simThread.start();
+					
+				
+				startStopButton.setRunning(!startStopButton.isRunning());
+				
+				fluidPanel.repaint();
+			}
+		});
+		startStopButton.setText("Start");
+		startStopButton.setBounds(1320, 461, 87, 20);
+		contentPane.add(startStopButton);
+		
+		JButton btnLoad = new JButton("Load");
+		btnLoad.setBounds(1320, 15, 97, 25);
+		contentPane.add(btnLoad);
 	}
 }
