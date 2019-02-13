@@ -50,20 +50,30 @@ public class ParticelManager {
 
 	// simulation
 	public void update(double timeStep) {
+		//DEBUG
 		if (ttt==10)
 			System.currentTimeMillis();
 		
-		System.out.println("start update");
+		long tempTime = System.currentTimeMillis();
 		applyExternalForce(timeStep);
+		consolLog("applyExternalForce: " + (System.currentTimeMillis() - tempTime )+ "ms");
+		tempTime = System.currentTimeMillis();
 		applyViscosity(timeStep);
+		consolLog("applyViscosity: " + (System.currentTimeMillis() - tempTime )+ "ms");
+		tempTime = System.currentTimeMillis();
 		advanceParticles(timeStep);
+		consolLog("advanceParticles: " + (System.currentTimeMillis() - tempTime )+ "ms");
+		tempTime = System.currentTimeMillis();
 		updateNeighbors();
+		consolLog("updateNeighbors: " + (System.currentTimeMillis() - tempTime )+ "ms");
+		tempTime = System.currentTimeMillis();
 		doubleDensityRelaxation(timeStep);
+		consolLog("doubleDensityRelaxation: " + (System.currentTimeMillis() - tempTime )+ "ms");
+		tempTime = System.currentTimeMillis();
 		resolveCollisions();
+		consolLog("resolveCollisions: " + (System.currentTimeMillis() - tempTime )+ "ms");
 		updateVelocity(timeStep);
-		
-		System.out.println(particles.get(0).getPos().getX());
-		System.out.println("end update");
+
 
 		if (particelCoordinationCheck)
 			checkCoordinats();
@@ -181,7 +191,7 @@ public class ParticelManager {
 		}
 	}
 
-	// currently not working
+	// currently not working [wrong]
 	public void resolveCollisions() {
 		double friction = 1;
 		double collisionSoftness = 0.4;
@@ -194,7 +204,7 @@ public class ParticelManager {
 				double distance = distanceField.getDistance(index);
 
 				if (distance > -collisionRadius) {
-					Vector normal = distanceField.getNormal(index);
+					Vector normal = distanceField.getNormal(index);		// not working 
 					Vector tangent = perpendicularCCW(normal);
 
 					double temp = timeStep * friction * Vector.scalarProduct(p.getVpn(), tangent);
@@ -251,6 +261,7 @@ public class ParticelManager {
 
 		for (int i = 0; i < amount; i++) {
 			if (getCurrentParticelCount() + 1 <= maxParticles) {
+				
 				particles.add(new Particle(x, y));
 				added++;
 			}
