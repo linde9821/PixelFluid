@@ -7,7 +7,6 @@ import pixelFluid.linde9821.com.simulation.grid.Grid;
 import pixelFluid.linde9821.com.simulation.particel.Particle;
 import pixelFluid.linde9821.com.simulation.particel.Position;
 import pixelFluid.linde9821.com.simulation.particel.Velocity;
-import sun.text.normalizer.CharTrie.FriendAgent;
 
 public class ParticelManager {
 
@@ -33,7 +32,7 @@ public class ParticelManager {
 
 	public ParticelManager() {
 		timeStep = 0.0166667;
-		maxParticles = 3000;
+		maxParticles = 6000;
 		radius = 2;
 		collisionRadius = 2;
 		p0 = 1;
@@ -45,7 +44,7 @@ public class ParticelManager {
 		Particle.resetCurrentAmount();
 		particles = new ArrayList<Particle>();
 		grid = new Grid();
-		distanceField = new DistanceField(grid);
+		distanceField = new DistanceField();
 	}
 
 	// simulation
@@ -207,8 +206,15 @@ public class ParticelManager {
 					Vector normal = distanceField.getNormal(index);		// not working 
 					Vector tangent = perpendicularCCW(normal);
 
-					double temp = timeStep * friction * Vector.scalarProduct(p.getVpn(), tangent);
-
+					double temp = 0.0;
+					
+					//anpassung
+					if (p.getVpn() != null)
+						temp = timeStep * friction * Vector.scalarProduct(p.getVpn(), tangent);
+					else 
+						temp = timeStep * friction; 					
+					
+					
 					tangent.scalarMulti(temp);
 
 					p.setPos(new Position(Vector.sub(p.getPos(), tangent)));

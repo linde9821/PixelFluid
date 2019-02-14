@@ -1,9 +1,12 @@
 package pixelFluid.linde9821.com.simulation.distanceField;
 
+import pixelFluid.linde9821.com.simulation.Vector;
+
 public class Cell {
 	
 	private int index;
 	private double distance;
+	private Vector normal;
 
 	public Cell(int i) {
 		index = i;
@@ -25,6 +28,16 @@ public class Cell {
 	public void setDistance(double distance) {
 		this.distance = distance;
 	}
+
+	public Vector getNormal() {
+		return normal;
+	}
+
+	public void setNormal(Vector normal) {
+		this.normal = normal;
+	}
+	
+	
 	
 	
 }

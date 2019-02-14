@@ -20,6 +20,7 @@ public class FluidPanel extends JPanel implements Runnable {
 	private boolean debug = true;
 	private FrameCounter frameCounter;
 	private int updates;
+	private int fps;
 
 	ParticelManager pm;
 
@@ -29,6 +30,7 @@ public class FluidPanel extends JPanel implements Runnable {
 		frameCounter = new FrameCounter();
 		frameCounter.start();
 		this.pm = pm;
+		fps = 60;
 	}
 
 	public void addParticles(int amount, int x, int y) {
@@ -63,6 +65,10 @@ public class FluidPanel extends JPanel implements Runnable {
 		g.drawString("Simulation: " + updates + " / 60", 10, 40);
 		g.drawString("Particelcount: " + pm.getCurrentParticelCount() + " / Max: " + pm.getMaxParticles(), 10, 50);
 	}
+	
+	public void setFps(int fps) {
+		this.fps = fps;
+	}
 
 	@Override
 	public void run() {
@@ -72,7 +78,7 @@ public class FluidPanel extends JPanel implements Runnable {
 		int internalUpdates = 0;
 
 		while (true) {
-			if (System.currentTimeMillis() - lastRun >= pm.getTimeStep()) {
+			if (System.currentTimeMillis() - lastRun >= 1000 / fps) {
 				pm.update(pm.getTimeStep());
 				internalUpdates++;
 				repaint();

@@ -76,8 +76,17 @@ public class VirtualFrame extends JFrame {
 		fluidPanel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				fluidPanel.addParticles(Integer.parseInt(tFSpawnAmount.getText()), e.getX(), e.getY());
+				//fluidPanel.addParticles(Integer.parseInt(tFSpawnAmount.getText()), e.getX(), e.getY());
+				
+				for (int i = 0; i < 10; i++) {
+					for (int j = 0; j <10; j++) {
+						fluidPanel.addParticles(Integer.parseInt(tFSpawnAmount.getText()), e.getX() + i, e.getY() + j);
+					}
+				}
+				
+				
 				fluidPanel.repaint();
+				
 			}
 		});
 		fluidPanel.setLocation(0, 0);
@@ -218,5 +227,16 @@ public class VirtualFrame extends JFrame {
 		});
 		btnReset.setBounds(1318, 492, 89, 23);
 		contentPane.add(btnReset);
+		
+		JTextField fps = new JTextField();
+		fps.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				fluidPanel.setFps(Integer.parseInt(fps.getText()));
+			}
+		});
+		fps.setText("60");
+		fps.setBounds(1320, 550, 150, 20);
+		contentPane.add(fps);
+		fps.setColumns(10);
 	}
 }
