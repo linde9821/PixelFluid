@@ -17,19 +17,18 @@ public class Grid {
 		double newX = (p.getPosPrev().getX() + p.getPos().getX());
 		double newY = (p.getPosPrev().getY() + p.getPos().getY());
 		
+		p.setPos(new Position(newX, newY));
+		
 		// not so sure
-		if (newY > 800)
+		if (newY >= 800)
 			newY = 799;
 		else if (newY < 0)
 			newY = 0;
 		
-		if (newX > 1200)
+		if (newX >= 1200)
 			newX = 1199;
 		else if (newX < 0)
 			newX = 0;
-		
-		p.setPos(new Position(newX, newY));
-		
 		
 		grid[(int) newX][(int) newY].setP(p);
 	}

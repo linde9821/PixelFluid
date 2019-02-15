@@ -49,7 +49,7 @@ public class VirtualFrame extends JFrame {
 			public void run() {
 				try {
 					VirtualFrame frame = new VirtualFrame();
-					
+
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -76,17 +76,17 @@ public class VirtualFrame extends JFrame {
 		fluidPanel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				//fluidPanel.addParticles(Integer.parseInt(tFSpawnAmount.getText()), e.getX(), e.getY());
-				
+				// fluidPanel.addParticles(Integer.parseInt(tFSpawnAmount.getText()), e.getX(),
+				// e.getY());
+
 				for (int i = 0; i < 10; i++) {
-					for (int j = 0; j <10; j++) {
+					for (int j = 0; j < 10; j++) {
 						fluidPanel.addParticles(Integer.parseInt(tFSpawnAmount.getText()), e.getX() + i, e.getY() + j);
 					}
 				}
-				
-				
+
 				fluidPanel.repaint();
-				
+
 			}
 		});
 		fluidPanel.setLocation(0, 0);
@@ -94,7 +94,7 @@ public class VirtualFrame extends JFrame {
 		fluidPanel.setVisible(true);
 		contentPane.setLayout(null);
 		contentPane.add(fluidPanel);
-		
+
 		simThread = new Thread(fluidPanel, "Simulation-Thread");
 
 		gravityPanel = new GravityPanel(pm.getGravity());
@@ -204,21 +204,20 @@ public class VirtualFrame extends JFrame {
 					simThread.interrupt();
 				else
 					simThread.start();
-					
-				
+
 				startStopButton.setRunning(!startStopButton.isRunning());
-				
+
 				fluidPanel.repaint();
 			}
 		});
 		startStopButton.setText("Start");
 		startStopButton.setBounds(1320, 461, 87, 20);
 		contentPane.add(startStopButton);
-		
+
 		JButton btnLoad = new JButton("Load");
 		btnLoad.setBounds(1320, 15, 97, 25);
 		contentPane.add(btnLoad);
-		
+
 		JButton btnReset = new JButton("reset");
 		btnReset.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -227,7 +226,7 @@ public class VirtualFrame extends JFrame {
 		});
 		btnReset.setBounds(1318, 492, 89, 23);
 		contentPane.add(btnReset);
-		
+
 		JTextField fps = new JTextField();
 		fps.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -238,5 +237,27 @@ public class VirtualFrame extends JFrame {
 		fps.setBounds(1320, 550, 150, 20);
 		contentPane.add(fps);
 		fps.setColumns(10);
+		
+		/*
+		for (int i= 440; i < 600; i=i+2) {
+			for (int j = 400; j < 800; j=j+2) {
+				fluidPanel.addParticles(1, j, i);
+			}
+		}
+		*/
+
+		/*
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 12; j++) {
+
+				for (int k = 0; k < 10; k++) {
+					for (int l = 0; l < 10; l++) {
+						fluidPanel.addParticles(1, (j + 1) * 100 + l, (i + 1) * 100 + k);
+					}
+				}
+
+			}
+		}
+		*/
 	}
 }

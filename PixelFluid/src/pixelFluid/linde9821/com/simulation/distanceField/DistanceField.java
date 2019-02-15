@@ -31,7 +31,15 @@ public class DistanceField {
 				
 				distanceField[index].setDistance(findMin(d));
 				
-				if (i == 799)
+				if (i == 0 && j == 0)
+					distanceField[index].setNormal(new Vector(1, 1));
+				else if (i == 0 && j == 1199)
+					distanceField[index].setNormal(new Vector(-1, 1));
+				else if (i == 799 && j==0)
+					distanceField[index].setNormal(new Vector(1, -1));
+				else if(i == 799 && j == 1119)
+					distanceField[index].setNormal(new Vector(-1, -1));
+				else if (i == 799)
 					distanceField[index].setNormal(new Vector(0, -1));
 				else if (i == 0)
 					distanceField[index].setNormal(new Vector(0, 1));

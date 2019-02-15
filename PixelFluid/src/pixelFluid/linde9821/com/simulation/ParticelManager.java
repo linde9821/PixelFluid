@@ -27,15 +27,15 @@ public class ParticelManager {
 	private DistanceField distanceField; //
 
 	private final boolean particelCoordinationCheck = true;
-	
+
 	private int ttt = 0;
 
 	public ParticelManager() {
 		timeStep = 0.0166667;
-		maxParticles = 6000;
+		maxParticles = 10000000;
 		radius = 2;
-		collisionRadius = 2;
-		p0 = 1;
+		collisionRadius = 10;
+		p0 = 10;
 		s = 2;
 		b = 1;
 		k = 2;
@@ -49,34 +49,33 @@ public class ParticelManager {
 
 	// simulation
 	public void update(double timeStep) {
-		//DEBUG
-		if (ttt==10)
+		// DEBUG
+		if (ttt == 1)
 			System.currentTimeMillis();
-		
+
 		long tempTime = System.currentTimeMillis();
 		applyExternalForce(timeStep);
-		consolLog("applyExternalForce: " + (System.currentTimeMillis() - tempTime )+ "ms");
+		consolLog("applyExternalForce: " + (System.currentTimeMillis() - tempTime) + "ms");
 		tempTime = System.currentTimeMillis();
 		applyViscosity(timeStep);
-		consolLog("applyViscosity: " + (System.currentTimeMillis() - tempTime )+ "ms");
+		consolLog("applyViscosity: " + (System.currentTimeMillis() - tempTime) + "ms");
 		tempTime = System.currentTimeMillis();
-		advanceParticles(timeStep);
-		consolLog("advanceParticles: " + (System.currentTimeMillis() - tempTime )+ "ms");
+		advanceParticles(timeStep); // look out for rounding
+		consolLog("advanceParticles: " + (System.currentTimeMillis() - tempTime) + "ms");
 		tempTime = System.currentTimeMillis();
 		updateNeighbors();
-		consolLog("updateNeighbors: " + (System.currentTimeMillis() - tempTime )+ "ms");
+		consolLog("updateNeighbors: " + (System.currentTimeMillis() - tempTime) + "ms");
 		tempTime = System.currentTimeMillis();
-		doubleDensityRelaxation(timeStep);
-		consolLog("doubleDensityRelaxation: " + (System.currentTimeMillis() - tempTime )+ "ms");
+		doubleDensityRelaxation(timeStep); // NaN Bug
+		consolLog("doubleDensityRelaxation: " + (System.currentTimeMillis() - tempTime) + "ms");
 		tempTime = System.currentTimeMillis();
 		resolveCollisions();
-		consolLog("resolveCollisions: " + (System.currentTimeMillis() - tempTime )+ "ms");
+		consolLog("resolveCollisions: " + (System.currentTimeMillis() - tempTime) + "ms");
 		updateVelocity(timeStep);
-
 
 		if (particelCoordinationCheck)
 			checkCoordinats();
-		
+
 		ttt++;
 	}
 
@@ -150,7 +149,7 @@ public class ParticelManager {
 			double pr = 0;
 			double prNear = 0;
 
-			double tempN = 0;
+			double tempN = 0; // darf niemals 0 werden
 			double q;
 
 			for (int j = 0; j < p.getNeighbors().size(); j++) {
@@ -174,18 +173,23 @@ public class ParticelManager {
 				Particle n = p.getNeighbors().get(j);
 
 				q = 1.0 - (tempN / radius);
+
+				//unsure
+				if (tempN == 0)
+					tempN = 0.00001;
+
 				Vector vpn = Vector.scalarDiv((Vector.sub(p.getPos(), n.getPos())), tempN);
 				n.setVpn(vpn);
 
 				D = Vector.scalarMulti(vpn, (0.5 * (timeStep * timeStep) * (P * q + PNear * (q * q))));
 
 				Vector temp = Vector.add(n.getPos(), D);
-				n.setPos(new Position (temp));
+				n.setPos(new Position(temp));
 
 				delta = Vector.sub(delta, D);
 			}
 
-			//Error Starts beeing neogbour to itselvs
+			// Error Starts beeing neogbour to itselvs
 			p.getPos().add(D);
 		}
 	}
@@ -203,18 +207,17 @@ public class ParticelManager {
 				double distance = distanceField.getDistance(index);
 
 				if (distance > -collisionRadius) {
-					Vector normal = distanceField.getNormal(index);		// not working 
+					Vector normal = distanceField.getNormal(index); // not working
 					Vector tangent = perpendicularCCW(normal);
 
 					double temp = 0.0;
-					
-					//anpassung
+
+					// anpassung
 					if (p.getVpn() != null)
 						temp = timeStep * friction * Vector.scalarProduct(p.getVpn(), tangent);
-					else 
-						temp = timeStep * friction; 					
-					
-					
+					else
+						temp = 0.0;
+
 					tangent.scalarMulti(temp);
 
 					p.setPos(new Position(Vector.sub(p.getPos(), tangent)));
@@ -264,14 +267,18 @@ public class ParticelManager {
 
 	public void addParticle(int amount, int x, int y) {
 		int added = 0;
+		
+		particles.add(new Particle(x, y));
 
+		
 		for (int i = 0; i < amount; i++) {
 			if (getCurrentParticelCount() + 1 <= maxParticles) {
-				
+
 				particles.add(new Particle(x, y));
 				added++;
 			}
 		}
+		
 
 		consolLog(added + " Particles added at (" + x + "|" + y + ")");
 	}
