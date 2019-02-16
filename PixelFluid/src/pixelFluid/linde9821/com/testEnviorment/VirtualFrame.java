@@ -16,6 +16,8 @@ import javax.swing.border.EmptyBorder;
 import pixelFluid.linde9821.com.simulation.ParticelManager;
 import pixelFluid.linde9821.com.testEnviorment.panels.FluidPanel;
 import pixelFluid.linde9821.com.testEnviorment.panels.GravityPanel;
+import pixelFluid.linde9821.com.testEnviorment.panels.SimSettingsPanel;
+
 import javax.swing.JButton;
 
 public class VirtualFrame extends JFrame {
@@ -66,7 +68,7 @@ public class VirtualFrame extends JFrame {
 
 		// frame
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 1500, 851);
+		setBounds(100, 100, 2000, 851);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -238,13 +240,20 @@ public class VirtualFrame extends JFrame {
 		contentPane.add(fps);
 		fps.setColumns(10);
 		
-		/*
+		SimSettingsPanel simSettingsPanel = new SimSettingsPanel(pm);
+		simSettingsPanel.setLocation(1500, 110);
+		simSettingsPanel.setSize(500, 500);
+		simSettingsPanel.setVisible(true);
+		contentPane.add(simSettingsPanel);		
+		
+		
+		
 		for (int i= 440; i < 600; i=i+2) {
 			for (int j = 400; j < 800; j=j+2) {
 				fluidPanel.addParticles(1, j, i);
 			}
 		}
-		*/
+		
 
 		/*
 		for (int i = 0; i < 8; i++) {

@@ -32,7 +32,7 @@ public class ParticelManager {
 
 	public ParticelManager() {
 		timeStep = 0.0166667;
-		maxParticles = 10000000;
+		maxParticles = 40000;
 		radius = 2;
 		collisionRadius = 10;
 		p0 = 10;
@@ -53,24 +53,12 @@ public class ParticelManager {
 		if (ttt == 1)
 			System.currentTimeMillis();
 
-		long tempTime = System.currentTimeMillis();
 		applyExternalForce(timeStep);
-		consolLog("applyExternalForce: " + (System.currentTimeMillis() - tempTime) + "ms");
-		tempTime = System.currentTimeMillis();
 		applyViscosity(timeStep);
-		consolLog("applyViscosity: " + (System.currentTimeMillis() - tempTime) + "ms");
-		tempTime = System.currentTimeMillis();
 		advanceParticles(timeStep); // look out for rounding
-		consolLog("advanceParticles: " + (System.currentTimeMillis() - tempTime) + "ms");
-		tempTime = System.currentTimeMillis();
 		updateNeighbors();
-		consolLog("updateNeighbors: " + (System.currentTimeMillis() - tempTime) + "ms");
-		tempTime = System.currentTimeMillis();
 		doubleDensityRelaxation(timeStep); // NaN Bug
-		consolLog("doubleDensityRelaxation: " + (System.currentTimeMillis() - tempTime) + "ms");
-		tempTime = System.currentTimeMillis();
 		resolveCollisions();
-		consolLog("resolveCollisions: " + (System.currentTimeMillis() - tempTime) + "ms");
 		updateVelocity(timeStep);
 
 		if (particelCoordinationCheck)
