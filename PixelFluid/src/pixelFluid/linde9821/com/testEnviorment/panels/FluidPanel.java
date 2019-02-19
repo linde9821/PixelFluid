@@ -2,12 +2,14 @@ package pixelFluid.linde9821.com.testEnviorment.panels;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Polygon;
 
 import javax.swing.JPanel;
 
 import pixelFluid.linde9821.com.simulation.ParticelManager;
 import pixelFluid.linde9821.com.simulation.Vector;
 import pixelFluid.linde9821.com.simulation.particel.Particle;
+import pixelFluid.linde9821.com.testEnviorment.Buffer;
 
 public class FluidPanel extends JPanel implements Runnable {
 
@@ -35,9 +37,11 @@ public class FluidPanel extends JPanel implements Runnable {
 	}
 
 	public void addParticles(int amount, int x, int y) {
-		
-			pm.addParticle(amount, x, y);
-		
+		pm.addParticle(amount, x, y);
+	}
+
+	public void addParticles(int amount, int x, int y, int xv, int yv) {
+		pm.addParticle(amount, x, y, xv, yv);
 	}
 
 	public void paintComponent(Graphics g) {
@@ -49,45 +53,37 @@ public class FluidPanel extends JPanel implements Runnable {
 
 		if (renderParticel)
 			drawParticel(g);
-		
-		drawVector(g);
+
+		// drawVector(g);
 	}
 
 	private void drawParticel(Graphics g) {
 		g.setColor(Color.red);
 
-		for (Particle p : pm.getParticles()) {
-			
-			double speed = p.getVel().length();
-			
-			if(speed < 10)
-				g.setColor(Color.blue);
-			else if (speed > 10 && speed < 100)
-				g.setColor(Color.yellow);
-			else
-				g.setColor(Color.white);
 		
-			g.drawRect((int) p.getPos().getX(), (int) p.getPos().getY(), 1, 1);
+		for (Particle p : pm.getParticles()) {
+			g.fillArc((int) p.getPos().getX(), (int) p.getPos().getY(), 4, 4, 0, 360);
 		}
 	}
-	
+
+	@SuppressWarnings("unused")
 	private void drawVector(Graphics g) {
 		g.setColor(Color.red);
-		
+
 		int index = 0;
-		
+
 		for (int i = 0; i < 800; i++) {
 			for (int j = 0; j < 1200; j++) {
-				
+
 				Vector v = pm.getDistanceField().getNormal(index);
-				
-				if(v.length() > 0)
-					g.drawLine(j, i, j + (int) v.getX()*10, i+ (int) v.getY()*10);
-				//g.fillRect((int) gr.getX() + 103, (int) gr.getY() + 103, 5, 5);
+
+				if (v.length() > 0)
+					g.drawLine(j, i, j + (int) v.getX() * 10, i + (int) v.getY() * 10);
+				// g.fillRect((int) gr.getX() + 103, (int) gr.getY() + 103, 5, 5);
 				index++;
 			}
 		}
-		
+
 	}
 
 	private void drawDebugInfos(Graphics g) {
@@ -97,7 +93,7 @@ public class FluidPanel extends JPanel implements Runnable {
 		g.drawString("Simulation: " + updates + " / 60", 10, 40);
 		g.drawString("Particelcount: " + pm.getCurrentParticelCount() + " / Max: " + pm.getMaxParticles(), 10, 50);
 	}
-	
+
 	public void setFps(int fps) {
 		this.fps = fps;
 	}

@@ -33,6 +33,7 @@ public class SimSettingsPanel extends JPanel {
 	private JLabel bLabel;
 	private JLabel kLabel;
 	private JLabel kNearLabel;
+	private JLabel frictionLabel;
 	
 	private JTextField radiusTf;
 	private JTextField collisionRadiusTf;
@@ -41,6 +42,7 @@ public class SimSettingsPanel extends JPanel {
 	private JTextField bTf;
 	private JTextField kTf;
 	private JTextField kNearTf;
+	private JTextField frictionTf;
 
 	private ParticelManager pm;
 	
@@ -142,6 +144,19 @@ public class SimSettingsPanel extends JPanel {
 			}
 		});
 		add(kNearTf);
+		
+		frictionLabel = new JLabel("collision friction:");
+		frictionLabel.setBounds(0, 210, 320, 26);
+		add(frictionLabel);
+		frictionTf = new JTextField(Double.toString(pm.getFriction()));
+		frictionTf.setBounds(320, 210, 40, 26);
+		frictionTf.setColumns(10);
+		frictionTf.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				pm.setFriction(Double.parseDouble(frictionTf.getText()));
+			}
+		});
+		add(frictionTf);
 	}
 
 	public JLabel getRadiusLabel() {

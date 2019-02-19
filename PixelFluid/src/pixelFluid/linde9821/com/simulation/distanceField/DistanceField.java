@@ -1,7 +1,6 @@
 package pixelFluid.linde9821.com.simulation.distanceField;
 
 import pixelFluid.linde9821.com.simulation.Vector;
-import pixelFluid.linde9821.com.simulation.grid.Grid;
 import pixelFluid.linde9821.com.simulation.particel.Position;
 
 public class DistanceField {
@@ -31,15 +30,17 @@ public class DistanceField {
 				
 				distanceField[index].setDistance(findMin(d));
 				
+				/*
 				if (i == 0 && j == 0)
-					distanceField[index].setNormal(new Vector(1, 1));
+					distanceField[index].setNormal(new Vector(0, 1));
 				else if (i == 0 && j == 1199)
-					distanceField[index].setNormal(new Vector(-1, 1));
+					distanceField[index].setNormal(new Vector(0, 1));
 				else if (i == 799 && j==0)
-					distanceField[index].setNormal(new Vector(1, -1));
+					distanceField[index].setNormal(new Vector(0, -1));
 				else if(i == 799 && j == 1119)
-					distanceField[index].setNormal(new Vector(-1, -1));
-				else if (i == 799)
+					distanceField[index].setNormal(new Vector(0, -1));
+				*/
+				if (i == 799)
 					distanceField[index].setNormal(new Vector(0, -1));
 				else if (i == 0)
 					distanceField[index].setNormal(new Vector(0, 1));
@@ -92,6 +93,9 @@ public class DistanceField {
 			if (min > ar[i])
 				min = ar[i];
 		}
+		
+		if (min <= 0)
+			min = -2;
 
 		return min;
 	}

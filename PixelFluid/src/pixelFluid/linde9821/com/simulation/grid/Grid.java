@@ -17,18 +17,18 @@ public class Grid {
 		double newX = (p.getPosPrev().getX() + p.getPos().getX());
 		double newY = (p.getPosPrev().getY() + p.getPos().getY());
 		
-		p.setPos(new Position(newX, newY));
-		
 		// not so sure
-		if (newY >= 800)
+		if (newY > 799)
 			newY = 799;
 		else if (newY < 0)
 			newY = 0;
 		
-		if (newX >= 1200)
+		if (newX > 1199)
 			newX = 1199;
 		else if (newX < 0)
 			newX = 0;
+		
+		p.setPos(new Position(newX, newY));
 		
 		grid[(int) newX][(int) newY].setP(p);
 	}
@@ -79,5 +79,26 @@ public class Grid {
 		else
 			return null;
 	}
+
+	public double getAlphaVal(int x, int y) {
+		if (x > 1199 || x < 0)
+			return 0;
+			
+		if (y < 0 || y > 799)
+			return 0;
+		
+		Particle p = grid[x][y].getP();
+		
+		if (p == null)
+			return 0;
+		
+		else 
+			return 1;
+	}
+	
+	public void reset() {
+		iniGrid();
+	}
+	
 
 }

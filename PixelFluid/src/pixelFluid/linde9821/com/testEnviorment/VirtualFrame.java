@@ -1,14 +1,18 @@
 package pixelFluid.linde9821.com.testEnviorment;
 
 import java.awt.EventQueue;
+import java.awt.MouseInfo;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
@@ -17,8 +21,6 @@ import pixelFluid.linde9821.com.simulation.ParticelManager;
 import pixelFluid.linde9821.com.testEnviorment.panels.FluidPanel;
 import pixelFluid.linde9821.com.testEnviorment.panels.GravityPanel;
 import pixelFluid.linde9821.com.testEnviorment.panels.SimSettingsPanel;
-
-import javax.swing.JButton;
 
 public class VirtualFrame extends JFrame {
 
@@ -37,11 +39,17 @@ public class VirtualFrame extends JFrame {
 	private GravityPanel gravityPanel;
 	private SimulationButton startStopButton;
 
+	private boolean mouseDown = false;
+	private boolean isRunning = false;
+
+	private MouseEvent meP;
+
 	/**
 	 * Simulation
 	 */
 	private ParticelManager pm;
 	private Thread simThread;
+	private FluidPanel fluidPanel;
 
 	/**
 	 * Launch the application.
@@ -54,6 +62,7 @@ public class VirtualFrame extends JFrame {
 
 					frame.setVisible(true);
 				} catch (Exception e) {
+					JOptionPane.showMessageDialog(null, "Fehler aufgetreten, Programm muss neugestartet werden.");
 					e.printStackTrace();
 				}
 			}
@@ -74,21 +83,35 @@ public class VirtualFrame extends JFrame {
 		setContentPane(contentPane);
 		setResizable(false);
 
-		FluidPanel fluidPanel = new FluidPanel(pm);
+		fluidPanel = new FluidPanel(pm);
 		fluidPanel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				// fluidPanel.addParticles(Integer.parseInt(tFSpawnAmount.getText()), e.getX(),
-				// e.getY());
-
-				for (int i = 0; i < 10; i++) {
-					for (int j = 0; j < 10; j++) {
-						fluidPanel.addParticles(Integer.parseInt(tFSpawnAmount.getText()), e.getX() + i, e.getY() + j);
-					}
+				if (Integer.parseInt(tFSpawnAmount.getText()) == 1)
+					fluidPanel.addParticles(Integer.parseInt(tFSpawnAmount.getText()), e.getX(), e.getY());
+				else {
+					fluidPanel.addParticles(Integer.parseInt(tFSpawnAmount.getText()), e.getX(), e.getY(), 1, 0);
 				}
 
 				fluidPanel.repaint();
 
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				if (e.getButton() == MouseEvent.BUTTON1) {
+					mouseDown = true;
+					meP = e;
+					initThread();
+				}
+			}
+
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				if (e.getButton() == MouseEvent.BUTTON1) {
+					mouseDown = false;
+					meP = null;
+				}
 			}
 		});
 		fluidPanel.setLocation(0, 0);
@@ -239,34 +262,56 @@ public class VirtualFrame extends JFrame {
 		fps.setBounds(1320, 550, 150, 20);
 		contentPane.add(fps);
 		fps.setColumns(10);
-		
+
 		SimSettingsPanel simSettingsPanel = new SimSettingsPanel(pm);
 		simSettingsPanel.setLocation(1500, 110);
 		simSettingsPanel.setSize(500, 500);
 		simSettingsPanel.setVisible(true);
-		contentPane.add(simSettingsPanel);		
-		
-		
-		
-		for (int i= 440; i < 600; i=i+2) {
-			for (int j = 400; j < 800; j=j+2) {
+		contentPane.add(simSettingsPanel);
+		/*
+
+		for (int i = 799; i > 700; i = i - 2) {
+			for (int j = 0; j < 1200; j = j + 2) {
 				fluidPanel.addParticles(1, j, i);
 			}
 		}
-		
 
-		/*
-		for (int i = 0; i < 8; i++) {
-			for (int j = 0; j < 12; j++) {
+		 * 
+		 * for (int i = 0; i < 8; i++) { for (int j = 0; j < 12; j++) {
+		 * 
+		 * for (int k = 0; k < 10; k++) { for (int l = 0; l < 10; l++) {
+		 * fluidPanel.addParticles(1, (j + 1) * 100 + l, (i + 1) * 100 + k); } }
+		 * 
+		 * } }
+		 */
+	}
 
-				for (int k = 0; k < 10; k++) {
-					for (int l = 0; l < 10; l++) {
-						fluidPanel.addParticles(1, (j + 1) * 100 + l, (i + 1) * 100 + k);
-					}
+	private synchronized boolean checkAndMark() {
+		if (isRunning)
+			return false;
+		isRunning = true;
+		return true;
+	}
+
+	private void initThread() {
+		if (checkAndMark()) {
+			new Thread() {
+				public void run() {
+					do {
+						Point p = MouseInfo.getPointerInfo().getLocation();
+						
+						pm.addParticle(Integer.parseInt(tFSpawnAmount.getText()), (int) p.getX() - 100, (int) p.getY() - 100, 100, -40);
+						
+						try {
+							sleep(100);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					} while (mouseDown);
+					isRunning = false;
 				}
-
-			}
+			}.start();
 		}
-		*/
 	}
 }
