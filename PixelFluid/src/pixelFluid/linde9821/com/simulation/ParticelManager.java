@@ -7,62 +7,50 @@ import pixelFluid.linde9821.com.simulation.grid.Grid;
 import pixelFluid.linde9821.com.simulation.particel.Particle;
 import pixelFluid.linde9821.com.simulation.particel.Position;
 import pixelFluid.linde9821.com.simulation.particel.Velocity;
-import sun.text.normalizer.CharTrie.FriendAgent;
 
 public class ParticelManager {
-
-	private double timeStep;
-	private final int maxParticles;
-	private double radius; // maximum distance particles effect each other
-	private double collisionRadius; // the distance from a wall that counts as a collision
-	private double p0; // rest density
-	private double s; // the viscosit's linear dependence on the velocity (sigma)
-	private double b; // the viscosit's quadratic dependence on the velocity (beta)
-	private double k; // stiffness used in DoubleDensityRelaxation
-	private double kNear; // near-stiffness used in DoubleDensityRelaxation
-	private Gravity gravity = new Gravity(0, 10); // the global gravity acceleration (in this project used as the only
-													// changing external force)
+	private SimulationSettings simulationSettings;
 
 	private ArrayList<Particle> particles; // main list of of particles
 	private Grid grid; //
 	private DistanceField distanceField; //
 
-	private final boolean particelCoordinationCheck = true;
+	private final boolean particelCoordinationCheck = false;
 
 	public ParticelManager() {
-		timeStep = 0.0166667;
-		maxParticles = 3000;
-
+		simulationSettings = new SimulationSettings();
 		Particle.resetCurrentAmount();
 		particles = new ArrayList<Particle>();
 		grid = new Grid();
-		distanceField = new DistanceField(grid);
+		distanceField = new DistanceField();
 	}
 
 	// simulation
 	public void update(double timeStep) {
-		System.out.println("start update");
-		applyExternalForce(timeStep);
-		applyViscosity(timeStep);
-		advanceParticles(timeStep);
-		updateNeighbors();
-		doubleDensityRelaxation(timeStep);
-		resolveCollisions();
-		updateVelocity(timeStep);
-		
-		System.out.println("end update");
-
+		try {
+			applyExternalForce(timeStep);
+			applyViscosity(timeStep);
+			advanceParticles(timeStep); // look out for rounding
+			updateNeighbors();
+			doubleDensityRelaxation(timeStep); // NaN Bug
+			resolveCollisions();
+			updateVelocity(timeStep);
+		} catch (Exception e) {
+			// JOptionPane.showMessageDialog(null, "Exception in der Simulation aufgetreten.
+			// Programm muss neugestartet werden");
+			// System.exit(0);
+		}
 
 		if (particelCoordinationCheck)
 			checkCoordinats();
+
 	}
 
 	public void applyExternalForce(double timeStep) {
 		for (int i = 0; i < particles.size(); i++) {
 			Particle p = particles.get(i);
 
-			p.getVel().add(gravity);
-
+			p.getVel().add(simulationSettings.getGravity());
 			// further forces can be added her
 		}
 	}
@@ -82,13 +70,14 @@ public class ParticelManager {
 					double length = vpn.length();
 					velInward = velInward / length;
 					vpn.set(Vector.scalarDiv(vpn, length)); // velInward = velInward / length
-					double q = length / radius;
+					double q = length / simulationSettings.getRadius();
 
-					double temp = 0.5 * timeStep * (1 - q) * (s * velInward + b * velInward * velInward);
+					double temp = 0.5 * timeStep * (1 - q) * (simulationSettings.getS() * velInward
+							+ simulationSettings.getB() * velInward * velInward);
 
 					Vector iVec = Vector.scalarMulti(vpn, temp); //
 
-					p.setVel((Velocity) Vector.sub(p.getVel(), iVec)); // p.vel = p.vel - I
+					p.setVel(new Velocity(Vector.sub(p.getVel(), iVec))); // p.vel = p.vel - I
 				}
 			}
 		}
@@ -115,7 +104,8 @@ public class ParticelManager {
 			for (int j = 0; j < possibleNeigbour.size(); j++) {
 				Particle n = possibleNeigbour.get(j);
 
-				if (Vector.sub(p.getPos(), n.getPos()).length() < radius) // |p.pos - n.pos| < radius
+				if (Vector.sub(p.getPos(), n.getPos()).length() < simulationSettings.getRadius()) // |p.pos - n.pos| <
+																									// radius
 					p.getNeighbors().add(n);
 			}
 		}
@@ -127,22 +117,22 @@ public class ParticelManager {
 			double pr = 0;
 			double prNear = 0;
 
-			double tempN = 0;
+			double tempN = 0; // darf niemals 0 werden
 			double q;
 
 			for (int j = 0; j < p.getNeighbors().size(); j++) {
 				Particle n = p.getNeighbors().get(j);
 
 				tempN = (Vector.sub(p.getPos(), n.getPos())).length();
-				q = 1.0 - (tempN / radius);
+				q = 1.0 - (tempN / simulationSettings.getRadius());
 				pr = pr + (q * q);
 				prNear = prNear + (q * q * q);
-				
+
 				n.setTempN(tempN);
 			}
 
-			double P = k * (pr - p0);
-			double PNear = kNear * prNear;
+			double P = simulationSettings.getK() * (pr - simulationSettings.getP0());
+			double PNear = simulationSettings.getkNear() * prNear;
 
 			Vector delta = new Vector(0, 0);
 			Vector D = new Vector(0, 0);
@@ -150,27 +140,31 @@ public class ParticelManager {
 			for (int j = 0; j < p.getNeighbors().size(); j++) {
 				Particle n = p.getNeighbors().get(j);
 
-				q = 1.0 - (tempN / radius);
+				q = 1.0 - (tempN / simulationSettings.getRadius());
+
+				// unsure
+				if (tempN == 0)
+					tempN = 0.00001;
+
 				Vector vpn = Vector.scalarDiv((Vector.sub(p.getPos(), n.getPos())), tempN);
 				n.setVpn(vpn);
 
 				D = Vector.scalarMulti(vpn, (0.5 * (timeStep * timeStep) * (P * q + PNear * (q * q))));
 
 				Vector temp = Vector.add(n.getPos(), D);
-				n.setPos((Position) temp);
+				n.setPos(new Position(temp));
 
 				delta = Vector.sub(delta, D);
 			}
 
+			// Error Starts beeing neogbour to itselvs
 			p.getPos().add(D);
 		}
 	}
 
-	// currently not working 
 	public void resolveCollisions() {
-		double friction = 1;
-		double collisionSoftness = 0.4;
-		
+		double collisionSoftness = 0.5;
+
 		for (int i = 0; i < particles.size(); i++) {
 			Particle p = particles.get(i);
 			int index = distanceField.getIndex(p.getPos());
@@ -178,18 +172,25 @@ public class ParticelManager {
 			if (index != -1) {
 				double distance = distanceField.getDistance(index);
 
-				if (distance > -collisionRadius) {
+				if (distance > -simulationSettings.getCollisionRadius()) {
 					Vector normal = distanceField.getNormal(index);
 					Vector tangent = perpendicularCCW(normal);
-					
-					double temp = timeStep * friction * Vector.scalarProduct(p.getVpn(), tangent);
-					
+
+					double temp = 0.0;
+
+					// anpassung
+					if (p.getVpn() != null)
+						temp = simulationSettings.getTimeStep() * simulationSettings.getFriction()
+								* Vector.scalarProduct(p.getVpn(), tangent);
+					else
+						temp = simulationSettings.getTimeStep() * simulationSettings.getFriction();
+
 					tangent.scalarMulti(temp);
-					
+
 					p.setPos(new Position(Vector.sub(p.getPos(), tangent)));
-					
-					temp = collisionSoftness * (distance - radius);
-					
+
+					temp = collisionSoftness * (distance - simulationSettings.getRadius());
+
 					p.setPos(new Position(Position.sub(p.getPos(), (Position.scalarMulti(normal, temp)))));
 				}
 			}
@@ -205,19 +206,29 @@ public class ParticelManager {
 		}
 	}
 
-	private Vector perpendicularCCW(Vector normal) {
-		return normal;
+	// check
+	private Vector perpendicularCCW(Vector v) {
+		double x = v.getY();
+		double y = -v.getX();
+		return new Vector(x, y);
 	}
-	
+
 	public void checkCoordinats() {
 		for (int i = 0; i < particles.size(); i++) {
 			Particle p = particles.get(i);
 
-			if (p.getPos().getX() > 10000 || p.getPos().getX() < -100 || p.getPos().getY() > 10000
-					|| p.getPos().getY() < -100) {
-				removeParticel(p);
-				consolLog("Particel " + p.getId() + " removed [particelCoordinationCheck] (" + p.getPos().getX() + "|"
-						+ p.getPos().getY() + ")");
+			if (p.getPos().getX() > 1200 + simulationSettings.getCollisionRadius()
+					|| p.getPos().getX() < 0 - simulationSettings.getCollisionRadius()
+					|| p.getPos().getY() > 800 + simulationSettings.getCollisionRadius()
+					|| p.getPos().getY() < 0 - simulationSettings.getCollisionRadius()) {
+
+				p.setPos(p.getPosPrev());
+
+				/*
+				 * removeParticel(p); consolLog("Particel " + p.getId() +
+				 * " removed [particelCoordinationCheck] (" + p.getPos().getX() + "|" +
+				 * p.getPos().getY() + ")");
+				 */
 			}
 		}
 	}
@@ -235,9 +246,24 @@ public class ParticelManager {
 		int added = 0;
 
 		for (int i = 0; i < amount; i++) {
-			if (getCurrentParticelCount() + 1 <= maxParticles) {
-				particles.add(new Particle(x, y));
+			addParticle(1, x, y, 0, 0);
+			added++;
+		}
+
+		consolLog(added + " Particles added at (" + x + "|" + y + ")");
+	}
+
+	public void addParticle(int amount, int x, int y, double xv, double yv) {
+		int added = 0;
+
+		for (int i = 0; i < amount; i++) {
+			if (amount + 1 < simulationSettings.getMaxParticles()) {
+				Particle p = new Particle(x, y);
+				p.setVel(new Velocity(xv, yv));
+				particles.add(p);
 				added++;
+			} else {
+				continue;
 			}
 		}
 
@@ -251,75 +277,75 @@ public class ParticelManager {
 	}
 
 	public int getMaxParticles() {
-		return maxParticles;
+		return simulationSettings.getMaxParticles();
 	}
 
 	public double getRadius() {
-		return radius;
+		return simulationSettings.getRadius();
 	}
 
 	public void setTimeStep(double timeStep) {
-		this.timeStep = timeStep;
+		simulationSettings.setTimeStep(timeStep);
 	}
 
 	public void setRadius(double radius) {
-		this.radius = radius;
+		simulationSettings.setRadius(radius);
 	}
 
 	public double getCollisionRadius() {
-		return collisionRadius;
+		return simulationSettings.getCollisionRadius();
 	}
 
 	public void setCollisionRadius(double collisionRadius) {
-		this.collisionRadius = collisionRadius;
+		simulationSettings.setCollisionRadius(collisionRadius);
 	}
 
 	public double getP0() {
-		return p0;
+		return simulationSettings.getP0();
 	}
 
 	public void setP0(double p0) {
-		this.p0 = p0;
+		simulationSettings.setP0(p0);
 	}
 
 	public double getS() {
-		return s;
+		return simulationSettings.getS();
 	}
 
 	public void setS(double s) {
-		this.s = s;
+		simulationSettings.setS(s);
 	}
 
 	public double getB() {
-		return b;
+		return simulationSettings.getB();
 	}
 
 	public void setB(double b) {
-		this.b = b;
+		simulationSettings.setB(b);
 	}
 
 	public double getK() {
-		return k;
+		return simulationSettings.getK();
 	}
 
 	public void setK(double k) {
-		this.k = k;
+		simulationSettings.setK(k);
 	}
 
 	public double getkNear() {
-		return kNear;
+		return simulationSettings.getkNear();
 	}
 
 	public void setkNear(double kNear) {
-		this.kNear = kNear;
+		simulationSettings.setkNear(kNear);
 	}
 
 	public Gravity getGravity() {
-		return gravity;
+		return simulationSettings.getGravity();
 	}
 
 	public void setGravity(Gravity gravity) {
-		this.gravity = gravity;
+		simulationSettings.setGravity(gravity);
 	}
 
 	public ArrayList<Particle> getParticles() {
@@ -347,7 +373,15 @@ public class ParticelManager {
 	}
 
 	public double getTimeStep() {
-		return timeStep;
+		return simulationSettings.getTimeStep();
+	}
+
+	public double getFriction() {
+		return simulationSettings.getFriction();
+	}
+
+	public void setFriction(double friction) {
+		simulationSettings.setFriction(friction);
 	}
 
 	private void consolLog(String str) {
