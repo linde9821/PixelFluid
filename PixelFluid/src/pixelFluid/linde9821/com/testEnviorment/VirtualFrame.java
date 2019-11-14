@@ -55,16 +55,14 @@ public class VirtualFrame extends JFrame {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					VirtualFrame frame = new VirtualFrame();
+		EventQueue.invokeLater(() -> {
+			try {
+				VirtualFrame frame = new VirtualFrame();
 
-					frame.setVisible(true);
-				} catch (Exception e) {
-					JOptionPane.showMessageDialog(null, "Fehler aufgetreten, Programm muss neugestartet werden.");
-					e.printStackTrace();
-				}
+				frame.setVisible(true);
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(null, "Fehler aufgetreten, Programm muss neugestartet werden.");
+				e.printStackTrace();
 			}
 		});
 	}
