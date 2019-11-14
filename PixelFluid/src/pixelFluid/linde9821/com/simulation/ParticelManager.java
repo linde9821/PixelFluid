@@ -15,7 +15,7 @@ public class ParticelManager {
 	private Grid grid; //
 	private DistanceField distanceField; //
 
-	private final boolean particelCoordinationCheck = false;
+	private final boolean particleCoordinationCheck = false;
 
 	public ParticelManager() {
 		simulationSettings = new SimulationSettings();
@@ -41,7 +41,7 @@ public class ParticelManager {
 			// System.exit(0);
 		}
 
-		if (particelCoordinationCheck)
+		if (particleCoordinationCheck)
 			checkCoordinats();
 
 	}

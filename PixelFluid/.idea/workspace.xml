@@ -2,40 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="38b4bc15-ad66-469a-9b42-5e5c0dfe976e" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/bin/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/pixelFluid/linde9821/com/simulation/Gravity.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/pixelFluid/linde9821/com/simulation/Gravity.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/pixelFluid/linde9821/com/simulation/ParticelManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/pixelFluid/linde9821/com/simulation/ParticelManager.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/pixelFluid/linde9821/com/simulation/Vector.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/pixelFluid/linde9821/com/simulation/Vector.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/pixelFluid/linde9821/com/simulation/distanceField/Cell.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/pixelFluid/linde9821/com/simulation/distanceField/Cell.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/pixelFluid/linde9821/com/simulation/distanceField/DistanceField.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/pixelFluid/linde9821/com/simulation/distanceField/DistanceField.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/pixelFluid/linde9821/com/simulation/grid/Cell.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/pixelFluid/linde9821/com/simulation/grid/Cell.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/pixelFluid/linde9821/com/simulation/grid/Grid.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/pixelFluid/linde9821/com/simulation/grid/Grid.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/pixelFluid/linde9821/com/simulation/particel/Particle.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/pixelFluid/linde9821/com/simulation/particel/Particle.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/pixelFluid/linde9821/com/simulation/particel/Position.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/pixelFluid/linde9821/com/simulation/particel/Position.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/pixelFluid/linde9821/com/simulation/particel/Velocity.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/pixelFluid/linde9821/com/simulation/particel/Velocity.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/pixelFluid/linde9821/com/testEnviorment/RenderDistanceField$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/pixelFluid/linde9821/com/testEnviorment/RenderDistanceField$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/pixelFluid/linde9821/com/testEnviorment/RenderDistanceField.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/pixelFluid/linde9821/com/testEnviorment/RenderDistanceField.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/pixelFluid/linde9821/com/testEnviorment/SimulationButton.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/pixelFluid/linde9821/com/testEnviorment/SimulationButton.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/pixelFluid/linde9821/com/testEnviorment/VirtualFrame$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/pixelFluid/linde9821/com/testEnviorment/VirtualFrame$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/pixelFluid/linde9821/com/testEnviorment/VirtualFrame$10.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/pixelFluid/linde9821/com/testEnviorment/VirtualFrame$10.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/pixelFluid/linde9821/com/testEnviorment/VirtualFrame$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/pixelFluid/linde9821/com/testEnviorment/VirtualFrame$2.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/pixelFluid/linde9821/com/testEnviorment/VirtualFrame$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/pixelFluid/linde9821/com/testEnviorment/VirtualFrame$3.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/pixelFluid/linde9821/com/testEnviorment/VirtualFrame$4.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/pixelFluid/linde9821/com/testEnviorment/VirtualFrame$4.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/pixelFluid/linde9821/com/testEnviorment/VirtualFrame$5.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/pixelFluid/linde9821/com/testEnviorment/VirtualFrame$5.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/pixelFluid/linde9821/com/testEnviorment/VirtualFrame$6.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/pixelFluid/linde9821/com/testEnviorment/VirtualFrame$6.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/pixelFluid/linde9821/com/testEnviorment/VirtualFrame$7.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/pixelFluid/linde9821/com/testEnviorment/VirtualFrame$7.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/pixelFluid/linde9821/com/testEnviorment/VirtualFrame$8.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/pixelFluid/linde9821/com/testEnviorment/VirtualFrame$8.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/pixelFluid/linde9821/com/testEnviorment/VirtualFrame$9.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/pixelFluid/linde9821/com/testEnviorment/VirtualFrame$9.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/pixelFluid/linde9821/com/testEnviorment/VirtualFrame.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/pixelFluid/linde9821/com/testEnviorment/VirtualFrame.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/pixelFluid/linde9821/com/testEnviorment/VirtualPanel$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/pixelFluid/linde9821/com/testEnviorment/VirtualPanel$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/pixelFluid/linde9821/com/testEnviorment/VirtualPanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/pixelFluid/linde9821/com/testEnviorment/VirtualPanel.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/pixelFluid/linde9821/com/testEnviorment/panels/FluidPanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/pixelFluid/linde9821/com/testEnviorment/panels/FluidPanel.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/pixelFluid/linde9821/com/testEnviorment/panels/FrameCounter.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/pixelFluid/linde9821/com/testEnviorment/panels/FrameCounter.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/pixelFluid/linde9821/com/testEnviorment/panels/GravityPanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/pixelFluid/linde9821/com/testEnviorment/panels/GravityPanel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pixelFluid/linde9821/com/simulation/ParticelManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pixelFluid/linde9821/com/simulation/ParticelManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pixelFluid/linde9821/com/testEnviorment/VirtualFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pixelFluid/linde9821/com/testEnviorment/VirtualFrame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pixelFluid/linde9821/com/testEnviorment/panels/FluidPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pixelFluid/linde9821/com/testEnviorment/panels/FluidPanel.java" afterDir="false" />
     </list>
-    <ignored path="$PROJECT_DIR$/out/" />
-    <ignored path="$PROJECT_DIR$/bin/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,60 +17,8 @@
     <option name="testRunner" value="GRADLE" />
     <option name="delegatedBuild" value="true" />
   </component>
-  <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/pixelFluid/linde9821/com/simulation/SimulationSettings.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="34">
-              <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/pixelFluid/linde9821/com/simulation/Vector.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="34">
-              <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/pixelFluid/linde9821/com/simulation/ParticelManager.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="68">
-              <caret line="10" column="13" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/pixelFluid/linde9821/com/testEnviorment/VirtualFrame.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="17">
-              <caret line="61" column="39" selection-start-line="61" selection-start-column="39" selection-end-line="61" selection-end-column="39" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
-  </component>
-  <component name="FindInProjectRecents">
-    <findStrings>
-      <find>main</find>
-    </findStrings>
-  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
-  </component>
-  <component name="IdeDocumentHistory">
-    <option name="CHANGED_PATHS">
-      <list>
-        <option value="$PROJECT_DIR$/src/pixelFluid/linde9821/com/testEnviorment/VirtualFrame.java" />
-      </list>
-    </option>
   </component>
   <component name="ProjectConfigurationFiles">
     <option name="files">
@@ -108,75 +27,8 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="260" />
-    <option name="y" value="20" />
-    <option name="width" value="1400" />
-    <option name="height" value="1000" />
-  </component>
+  <component name="ProjectId" id="1TbHiT6JZSL4bTXy0wKOpLZ3NeE" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
-  <component name="ProjectView">
-    <navigator proportions="" version="1">
-      <foldersAlwaysOnTop value="true" />
-    </navigator>
-    <panes>
-      <pane id="Scope" />
-      <pane id="ProjectPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="PixelFluid" type="b2602c69:ProjectViewProjectNode" />
-              <item name="PixelFluid" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="PixelFluid" type="b2602c69:ProjectViewProjectNode" />
-              <item name="PixelFluid" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="PixelFluid" type="b2602c69:ProjectViewProjectNode" />
-              <item name="PixelFluid" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="com" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="PixelFluid" type="b2602c69:ProjectViewProjectNode" />
-              <item name="PixelFluid" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="com" type="462c0819:PsiDirectoryNode" />
-              <item name="simulation" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="PixelFluid" type="b2602c69:ProjectViewProjectNode" />
-              <item name="PixelFluid" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="com" type="462c0819:PsiDirectoryNode" />
-              <item name="simulation" type="462c0819:PsiDirectoryNode" />
-              <item name="distanceField" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="PixelFluid" type="b2602c69:ProjectViewProjectNode" />
-              <item name="PixelFluid" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="com" type="462c0819:PsiDirectoryNode" />
-              <item name="simulation" type="462c0819:PsiDirectoryNode" />
-              <item name="grid" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="PixelFluid" type="b2602c69:ProjectViewProjectNode" />
-              <item name="PixelFluid" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="com" type="462c0819:PsiDirectoryNode" />
-              <item name="simulation" type="462c0819:PsiDirectoryNode" />
-              <item name="particel" type="462c0819:PsiDirectoryNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
-      <pane id="PackagesPane" />
-    </panes>
-  </component>
   <component name="RunDashboard">
     <option name="ruleStates">
       <list>
@@ -221,67 +73,5 @@
       <updated>1573721437215</updated>
     </task>
     <servers />
-  </component>
-  <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25266525" />
-      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info id="Designer" order="2" />
-      <window_info id="Image Layers" order="3" />
-      <window_info id="Capture Tool" order="4" />
-      <window_info id="UI Designer" order="5" />
-      <window_info id="Learn" order="6" />
-      <window_info id="Favorites" order="7" side_tool="true" />
-      <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.32936078" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info active="true" anchor="bottom" id="Version Control" order="7" visible="true" weight="0.32936078" />
-      <window_info anchor="bottom" id="Terminal" order="8" />
-      <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
-      <window_info anchor="bottom" id="Messages" order="10" />
-      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="right" id="Palette" order="3" />
-      <window_info anchor="right" id="Maven" order="4" />
-      <window_info anchor="right" id="Theme Preview" order="5" />
-      <window_info anchor="right" id="Capture Analysis" order="6" />
-      <window_info anchor="right" id="Palette&#9;" order="7" />
-    </layout>
-  </component>
-  <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/pixelFluid/linde9821/com/simulation/SimulationSettings.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/pixelFluid/linde9821/com/simulation/Vector.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/pixelFluid/linde9821/com/simulation/ParticelManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="10" column="13" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/pixelFluid/linde9821/com/testEnviorment/VirtualFrame.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="61" column="39" selection-start-line="61" selection-start-column="39" selection-end-line="61" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
   </component>
 </project>

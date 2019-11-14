@@ -58,7 +58,7 @@ public class FluidPanel extends JPanel implements Runnable {
 	}
 
 	private void drawParticel(Graphics g) {
-		g.setColor(Color.red);
+		g.setColor(Color.blue);
 
 		
 		for (Particle p : pm.getParticles()) {
